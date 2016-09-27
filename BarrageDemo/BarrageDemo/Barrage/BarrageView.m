@@ -427,7 +427,9 @@ static BOOL isStart = NO;//标记动画是否开始
     }
 }
 
-#pragma mark - ProtectedMethod
+@end
+
+@implementation BarrageView (ProtectedMethod)
 
 - (void)addOwnViews
 {
