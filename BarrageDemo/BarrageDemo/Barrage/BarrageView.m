@@ -433,6 +433,7 @@ static BOOL isStart = NO;//标记动画是否开始
     [self pauseAnimation];
     
     //清除缓存
+    [self.showCells makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.showCells removeAllObjects];
     [self.dataArray removeAllObjects];
     [self.highPrioritys removeAllObjects];
