@@ -404,7 +404,7 @@ static BOOL isStart = NO;//标记动画是否开始
     [self performSelector:@selector(startAnimation) withObject:nil afterDelay:1.0];
 }
 
-- (void)stopAnimation
+- (void)pauseAnimation
 {
     //停止当前动画
     if (self.showCells.count) {
@@ -425,6 +425,29 @@ static BOOL isStart = NO;//标记动画是否开始
     if ([self dataArrayIsNil] == NO) {
         [self performSelector:@selector(startAnimation) withObject:nil afterDelay:0.0];
     }
+}
+
+- (void)stopAnimation
+{
+    //暂停动画
+    [self pauseAnimation];
+    
+    //清除缓存
+    [self.showCells removeAllObjects];
+    [self.dataArray removeAllObjects];
+    [self.highPrioritys removeAllObjects];
+    [self.mediumPrioritys removeAllObjects];
+    [self.lowPrioritys removeAllObjects];
+    [self.orbitPoints removeAllObjects];
+    
+    self.showCells       = nil;
+    self.dataArray       = nil;
+    self.highPrioritys   = nil;
+    self.mediumPrioritys = nil;
+    self.lowPrioritys    = nil;
+    self.orbitPoints     = nil;
+    self.numbers         = 0;
+    self.count           = 0;
 }
 
 @end

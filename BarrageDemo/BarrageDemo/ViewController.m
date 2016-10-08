@@ -58,7 +58,7 @@
 {
     btn.selected = !btn.selected;
     if (btn.selected) {
-        [self.barrageView stopAnimation];
+        [self.barrageView pauseAnimation];
     }else {
         [self.barrageView resumeAnimation];
     }

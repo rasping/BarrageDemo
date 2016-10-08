@@ -62,11 +62,15 @@
 /**
  *  暂停动画
  */
-- (void)stopAnimation;
+- (void)pauseAnimation;
 /**
  *  继续动画
  */
 - (void)resumeAnimation;
+/**
+ *  停止动画,所有的缓存数据都会被清空
+ */
+- (void)stopAnimation;
 
 @end
 
