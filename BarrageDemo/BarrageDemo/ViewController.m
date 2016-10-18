@@ -43,6 +43,8 @@
     [super viewDidLoad];
     self.barrageView.delegate = self;
     self.barrageView.dataSouce = self;
+    
+
 }
 
 #pragma mark - Action
@@ -88,14 +90,14 @@
 
 - (void)barrageView:(BarrageView *)barrageView willDisplayCell:(BarrageViewCell *)cell
 {
-    CustomCell *customCell = (CustomCell *)cell;
-    NSLog(@"%@即将展示", customCell.model.message);
+//    CustomCell *customCell = (CustomCell *)cell;
+//    NSLog(@"%@即将展示", customCell.model.message);
 }
 
 - (void)barrageView:(BarrageView *)barrageView didEndDisplayingCell:(BarrageViewCell *)cell
 {
-    CustomCell *customCell = (CustomCell *)cell;
-    NSLog(@"%@展示完成", customCell.model.message);
+//    CustomCell *customCell = (CustomCell *)cell;
+//    NSLog(@"%@展示完成", customCell.model.message);
 }
 
 @end

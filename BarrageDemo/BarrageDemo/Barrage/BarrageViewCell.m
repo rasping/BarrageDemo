@@ -8,7 +8,7 @@
 
 #import "BarrageViewCell.h"
 
-@interface BarrageViewCell ()
+@interface BarrageViewCell ()<CAAnimationDelegate>
 
 @property (copy, nonatomic) void (^completed)(BOOL);
 
@@ -36,7 +36,7 @@
  */
 - (BOOL)examineColide:(BarrageViewCell *)cell
 {
-    NSTimeInterval t1 = self.duration - self.cellWidth / self.speed;
+    NSTimeInterval t1 = self.duration - self.cellWidth / self.speed - 0.3;
     //如果currentCell现在就开始发送，动画执行完成时的时间
     NSDate *nowDate = [NSDate date];
     if (_stopDate) {

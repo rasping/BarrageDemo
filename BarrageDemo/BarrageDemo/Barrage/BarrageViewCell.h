@@ -57,7 +57,8 @@
  *
  *  @return 返回当前最合适展示弹幕的轨道，-1代表找不到用于展示的轨道
  */
-- (NSInteger)examineOrbitWithNumbers:(NSInteger)numbers showCells:(NSMutableArray *)showCells;
+- (NSInteger)examineOrbitWithNumbers:(NSInteger)numbers
+                           showCells:(NSMutableArray *)showCells;
 
 /**
  *  计算动画时间

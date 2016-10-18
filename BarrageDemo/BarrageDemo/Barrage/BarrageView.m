@@ -330,7 +330,7 @@
         BarrageViewCell *cell = self.cellCaches[index];
         if ([cell.reuseIdentifier isEqualToString:identifier]) {
             availableCell = cell;
-            [self.cellCaches removeObject:cell];
+            [self.cellCaches removeObjectAtIndex:index];
             break;
         }
     }
@@ -387,8 +387,11 @@ static BOOL isStart = NO;//标记动画是否开始
                     [ws.delegate barrageView:self willDisplayCell:currentCell];
                 }
             } completion:^(BOOL finished) {
-                [ws.cellCaches addObject:currentCell];
+                if (![self.cellCaches containsObject:currentCell]) {
+                    [ws.cellCaches addObject:currentCell];
+                }
                 [ws.showCells removeObject:currentCell];
+                [self.dataArray removeObject:obj];
                 if ([ws.delegate respondsToSelector:@selector(barrageView:didEndDisplayingCell:)]) {
                     [ws.delegate barrageView:ws didEndDisplayingCell:currentCell];
                 }
