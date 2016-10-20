@@ -20,13 +20,18 @@
 
 @implementation CustomCell
 
-- (instancetype)initWithIdentifier:(NSString *)identifier
+- (instancetype)reloadCustomCell
 {
-    if (self = [super initWithIdentifier:identifier]) {
-        self = [[NSBundle mainBundle] loadNibNamed:@"CustomCell" owner:self options:0].firstObject;
-    }
-    return self;
+    return [[NSBundle mainBundle] loadNibNamed:@"CustomCell" owner:self options:0].firstObject;
 }
+
+//- (instancetype)init
+//{
+//    if (self = [super init]) {
+//        self = [[NSBundle mainBundle] loadNibNamed:@"CustomCell" owner:self options:0].firstObject;
+//    }
+//    return self;
+//}
 
 + (instancetype)cellWithBarrageView:(BarrageView *)barrageView
 {

@@ -91,3 +91,12 @@
 
 @end
 
+//供子类重写的接口
+@interface BarrageViewCell (ProtectedMethod)
+
+/**
+ *  从加载自定义cell
+ */
+- (instancetype)reloadCustomCell;
+
+@end

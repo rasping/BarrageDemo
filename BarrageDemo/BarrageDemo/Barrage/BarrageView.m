@@ -326,13 +326,21 @@
 - (BarrageViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier
 {
     BarrageViewCell *availableCell = nil;
-    for (int index = 0; index < self.cellCaches.count; index++) {
-        BarrageViewCell *cell = self.cellCaches[index];
-        if ([cell.reuseIdentifier isEqualToString:identifier]) {
-            availableCell = cell;
-            [self.cellCaches removeObjectAtIndex:index];
-            break;
-        }
+//    for (int index = 0; index < self.cellCaches.count; index++) {
+//        BarrageViewCell *cell = self.cellCaches[index];
+//        if ([cell.reuseIdentifier isEqualToString:identifier]) {
+//            availableCell = cell;
+//            break;
+//        }
+//    }
+//    if (availableCell) {
+//        [availableCell removeFromSuperview];
+//        [self.cellCaches removeObject:availableCell];
+//    }
+    if (self.cellCaches.count) {
+        availableCell = self.cellCaches.firstObject;
+        [availableCell removeFromSuperview];
+        [self.cellCaches removeObjectAtIndex:0];
     }
     return availableCell;
 }
@@ -342,12 +350,12 @@ static BOOL isStart = NO;//标记动画是否开始
 - (void)insertBarrages:(NSArray<id<BarrageModelAble>> *)barrages immediatelyShow:(BOOL)flag
 {
     [BarrageView checkElementOfBarrages:barrages];
-    self.count = barrages.count;
     if (barrages.count) {
         [self assortDataArray:barrages];
     }
+    self.count = self.dataArray.count;
     if (flag == YES && isStart == NO) {
-        isStart = YES;
+//        isStart = YES;
         [self startAnimation];
     }
     
@@ -362,9 +370,9 @@ static BOOL isStart = NO;//标记动画是否开始
 
 - (void)startAnimation
 {
-    NSArray *showArray = [self subArrayWithNumber:self.numbers];//需要展示的models
-    for (id<BarrageModelAble> obj in showArray) {
-        
+    NSArray *subArray = [self subArrayWithNumber:self.numbers];//需要展示的models
+    for (id<BarrageModelAble> obj in subArray) {
+        if (![self.dataArray containsObject:obj]) continue;
         //1.谁来展示
         BarrageViewCell *currentCell = [self.dataSouce barrageView:self cellForRowAtIndex:[self.dataArray indexOfObject:obj]];
         
@@ -387,15 +395,12 @@ static BOOL isStart = NO;//标记动画是否开始
                     [ws.delegate barrageView:self willDisplayCell:currentCell];
                 }
             } completion:^(BOOL finished) {
-                if (![self.cellCaches containsObject:currentCell]) {
-                    [ws.cellCaches addObject:currentCell];
-                }
+                [ws.cellCaches addObject:currentCell];
                 [ws.showCells removeObject:currentCell];
-                [self.dataArray removeObject:obj];
                 if ([ws.delegate respondsToSelector:@selector(barrageView:didEndDisplayingCell:)]) {
                     [ws.delegate barrageView:ws didEndDisplayingCell:currentCell];
                 }
-                if (ws.count-- == 0) {
+                if (--ws.count == 0) {
                     [ws.dataArray removeAllObjects];
                     if ([ws.delegate respondsToSelector:@selector(barrageViewCompletedCurrentAnimations)]) {
                         [ws.delegate barrageViewCompletedCurrentAnimations];
@@ -404,7 +409,10 @@ static BOOL isStart = NO;//标记动画是否开始
             }];
         }
     }
-    [self performSelector:@selector(startAnimation) withObject:nil afterDelay:1.0];
+    if (![self dataArrayIsNil]) {
+        [NSObject cancelPreviousPerformRequestsWithTarget:self];
+        [self performSelector:@selector(startAnimation) withObject:nil afterDelay:1.0];
+    }
 }
 
 - (void)pauseAnimation
@@ -438,20 +446,15 @@ static BOOL isStart = NO;//标记动画是否开始
     //清除缓存
     [self.showCells makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.showCells removeAllObjects];
+    [self.cellCaches removeAllObjects];
     [self.dataArray removeAllObjects];
     [self.highPrioritys removeAllObjects];
     [self.mediumPrioritys removeAllObjects];
     [self.lowPrioritys removeAllObjects];
     [self.orbitPoints removeAllObjects];
     
-    self.showCells       = nil;
-    self.dataArray       = nil;
-    self.highPrioritys   = nil;
-    self.mediumPrioritys = nil;
-    self.lowPrioritys    = nil;
-    self.orbitPoints     = nil;
-    self.numbers         = 0;
-    self.count           = 0;
+    self.numbers = 0;
+    self.count   = 0;
 }
 
 @end

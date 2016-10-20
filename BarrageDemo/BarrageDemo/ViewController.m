@@ -33,7 +33,7 @@
     if (!_dataArray) {
         NSString *path = [[NSBundle mainBundle] pathForResource:@"BarrageFile" ofType:@"plist"];
         NSMutableArray *array = [BarrageModel mj_objectArrayWithFile:path];
-        _dataArray = array;
+        _dataArray = [array subarrayWithRange:NSMakeRange(0, 100)];
     }
     return _dataArray;
 }
@@ -45,6 +45,11 @@
     self.barrageView.dataSouce = self;
     
 
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.barrageView insertBarrages:@[self.dataArray.firstObject] immediatelyShow:YES];
 }
 
 #pragma mark - Action
@@ -84,8 +89,8 @@
 
 - (void)barrageView:(BarrageView *)barrageView didSelectedCell:(BarrageViewCell *)cell
 {
-    CustomCell *customCell = (CustomCell *)cell;
-    NSLog(@"你点击了:%@", customCell.model.message);
+//    CustomCell *customCell = (CustomCell *)cell;
+//    NSLog(@"你点击了:%@", customCell.model.message);
 }
 
 - (void)barrageView:(BarrageView *)barrageView willDisplayCell:(BarrageViewCell *)cell

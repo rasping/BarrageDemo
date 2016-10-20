@@ -21,6 +21,8 @@
 - (instancetype)initWithIdentifier:(NSString *)identifier
 {
     if (self = [super init]) {
+        self = [self reloadCustomCell];
+//        self = [[[self class] alloc] init];
         _reuseIdentifier = identifier;
     }
     return self;
@@ -161,6 +163,15 @@
     if (self.completed) {
         self.completed(flag);
     }
+}
+
+@end
+
+@implementation BarrageViewCell (ProtectedMethod)
+
+- (instancetype)reloadCustomCell
+{
+    return nil;
 }
 
 @end
