@@ -112,10 +112,6 @@
  */
 - (void)barrageView:(BarrageView *)barrageView didSelectedCell:(BarrageViewCell *)cell;
 /**
- *  当前插入的弹幕模型数组全部展示完成回调
- */
-- (void)barrageViewCompletedCurrentAnimations;
-/**
  *  弹幕即将显示时调用
  */
 - (void)barrageView:(BarrageView *)barrageView willDisplayCell:(BarrageViewCell *)cell;

@@ -28,6 +28,10 @@
  */
 @property (strong, nonatomic) NSMutableArray *dataArray;
 /**
+ 当前插入的数组
+ */
+@property (strong, nonatomic) NSArray *currentArray;
+/**
  *  高优先级数据源
  */
 @property (strong, nonatomic) NSMutableArray *highPrioritys;
@@ -47,10 +51,6 @@
  *  记录轨道总数
  */
 @property (assign, nonatomic) NSInteger numbers;
-/**
- *  记录当前插入的models中剩余还没展示的消息数
- */
-@property (assign, nonatomic) NSInteger count;
 
 @end
 
@@ -345,17 +345,14 @@
     return availableCell;
 }
 
-static BOOL isStart = NO;//标记动画是否开始
-
 - (void)insertBarrages:(NSArray<id<BarrageModelAble>> *)barrages immediatelyShow:(BOOL)flag
 {
     [BarrageView checkElementOfBarrages:barrages];
     if (barrages.count) {
         [self assortDataArray:barrages];
     }
-    self.count = self.dataArray.count;
-    if (flag == YES && isStart == NO) {
-//        isStart = YES;
+    self.currentArray = barrages;
+    if (flag == YES) {
         [self startAnimation];
     }
     
@@ -374,7 +371,7 @@ static BOOL isStart = NO;//标记动画是否开始
     for (id<BarrageModelAble> obj in subArray) {
         if (![self.dataArray containsObject:obj]) continue;
         //1.谁来展示
-        BarrageViewCell *currentCell = [self.dataSouce barrageView:self cellForRowAtIndex:[self.dataArray indexOfObject:obj]];
+        BarrageViewCell *currentCell = [self.dataSouce barrageView:self cellForRowAtIndex:[self.currentArray indexOfObject:obj]];
         
         //2.在哪展示
         NSTimeInterval duration = [self animationDurationWithCell:currentCell width:[obj cellWidth]];
@@ -397,14 +394,12 @@ static BOOL isStart = NO;//标记动画是否开始
             } completion:^(BOOL finished) {
                 [ws.cellCaches addObject:currentCell];
                 [ws.showCells removeObject:currentCell];
+                [ws.dataArray removeObject:obj];
                 if ([ws.delegate respondsToSelector:@selector(barrageView:didEndDisplayingCell:)]) {
                     [ws.delegate barrageView:ws didEndDisplayingCell:currentCell];
                 }
-                if (--ws.count == 0) {
-                    [ws.dataArray removeAllObjects];
-                    if ([ws.delegate respondsToSelector:@selector(barrageViewCompletedCurrentAnimations)]) {
-                        [ws.delegate barrageViewCompletedCurrentAnimations];
-                    }
+                if (!ws.dataArray.count) {
+                    ws.currentArray = nil;
                 }
             }];
         }
@@ -454,7 +449,6 @@ static BOOL isStart = NO;//标记动画是否开始
     [self.orbitPoints removeAllObjects];
     
     self.numbers = 0;
-    self.count   = 0;
 }
 
 @end
