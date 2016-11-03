@@ -41,10 +41,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     self.barrageView.delegate = self;
     self.barrageView.dataSouce = self;
-    
-
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
@@ -78,10 +77,10 @@
     return 5;
 }
 
-- (BarrageViewCell *)barrageView:(BarrageView *)barrageView cellForRowAtIndex:(NSInteger)index
+- (BarrageViewCell *)barrageView:(BarrageView *)barrageView cellForModel:(id<BarrageModelAble>)model
 {
     CustomCell *cell = [CustomCell cellWithBarrageView:barrageView];
-    cell.model = self.dataArray[index];
+    cell.model = (BarrageModel *)model;
     return cell;
 }
 

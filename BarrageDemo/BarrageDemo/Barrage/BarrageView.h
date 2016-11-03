@@ -100,7 +100,7 @@
 /**
  *  返回弹幕的样式
  */
-- (BarrageViewCell *)barrageView:(BarrageView *)barrageView cellForRowAtIndex:(NSInteger)index;
+- (BarrageViewCell *)barrageView:(BarrageView *)barrageView cellForModel:(id<BarrageModelAble>)model;
 
 @end
 

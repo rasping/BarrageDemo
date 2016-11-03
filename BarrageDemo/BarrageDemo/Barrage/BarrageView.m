@@ -371,7 +371,7 @@
     for (id<BarrageModelAble> obj in subArray) {
         if (![self.dataArray containsObject:obj]) continue;
         //1.谁来展示
-        BarrageViewCell *currentCell = [self.dataSouce barrageView:self cellForRowAtIndex:[self.currentArray indexOfObject:obj]];
+        BarrageViewCell *currentCell = [self.dataSouce barrageView:self cellForModel:obj];
         
         //2.在哪展示
         NSTimeInterval duration = [self animationDurationWithCell:currentCell width:[obj cellWidth]];
